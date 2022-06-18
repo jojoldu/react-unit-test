@@ -1,15 +1,16 @@
-import useFetchComment from './query/useFetchComment';
+import useFetchComments from './query/useFetchComments';
 
 export default function CommentComponent() {
-  const query = useFetchComment();
-  const comment = query.data
+  const query = useFetchComments();
+  const comments = query.data
   return (
     <div>
       <p>Hello</p>
-
-      <p>{comment?.time}</p>
-      <p>{comment?.by}</p>
-      <p>{comment?.id}</p>
+      {
+        comments?.map((comment) => (
+          <li key={comment?.id}>{comment.id}</li>
+        ))
+      }
     </div>
   )
 }

@@ -1,8 +1,32 @@
-import axios from 'axios';
+import { database } from './apiServer';
 
-function createInstance() {
-  return axios.create({
-  });
+export type axiosResponse = {
+  data: any
 }
 
-export const api = createInstance();
+function createAxiosInstance() {
+  return {
+    get: (url: string): Promise<axiosResponse> => {
+      return new Promise((resolve) => {
+        return resolve({
+          data: Object.assign([], database)
+        });
+      });
+    },
+
+    post: (url: string, requestBody: any): Promise<axiosResponse> => {
+      if(!requestBody?.id) {
+        throw new Error('id가 비어있습니다.');
+      }
+      database.push(requestBody);
+
+      return new Promise((resolve) => {
+        return resolve({
+          data: Object.assign([], requestBody)
+        });
+      });
+    }
+  }
+}
+
+export const axiosApi = createAxiosInstance();
