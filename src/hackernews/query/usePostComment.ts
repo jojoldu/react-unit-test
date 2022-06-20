@@ -4,5 +4,5 @@ import { Comment } from '../Comment';
 import postComment from './postComment';
 
 export default function usePostComment() {
-  return useQuery<Comment, Error>('comment', postComment);
+  return null;
 }

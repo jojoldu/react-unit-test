@@ -1,18 +1,25 @@
 import { useCallback } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import useFetchComments from './query/useFetchComments';
-import { Comment } from './Comment';
 import postComment from './query/postComment';
+import { Comment } from './Comment';
 
 export default function CommentComponent() {
+  const queryClient = useQueryClient();
   const query = useFetchComments();
   const comments = query.data;
 
-  const comment: Comment = {
-    id: create()
-  }
+  const mutation = useMutation((data: Comment) => postComment(data), {
+    onMutate: (data: Comment) => {
+      const previousValue = queryClient.getQueryData('users');
+      console.log('previousValue', data);
+      queryClient.setQueryData('comments', (old: any) => {
+        console.log('old', old);
+        return [...old, data];
+      });
 
-  const mutation = useMutation((data: object) => postComment(data), {
+      return previousValue;
+    },
     onSuccess: () => {
       console.log(`사용자추가`)
     },
@@ -31,18 +38,17 @@ export default function CommentComponent() {
       <ul>
       {
         comments?.map((comment) => (
-          <li key={comment?.id}>commentId: {comment.id}</li>
+          <li key={comment?.id}>{comment.id} by {comment.name}</li>
         ))
       }
       </ul>
-      <button onClick={() => handleClick}>코멘트 추가</button>
+      <button onClick={() => handleClick({id: create()})}>코멘트 추가</button>
     </div>
   )
 }
 
-
 export function create(): number {
   const max = 99;
   const min = 1;
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 }
