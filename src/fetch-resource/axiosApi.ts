@@ -6,13 +6,11 @@ export type axiosResponse = {
 
 function createAxiosInstance() {
   return {
-    get: (url: string): Promise<axiosResponse> => {
-      return new Promise((resolve) => {
-        return resolve({
+    get: (url: string): Promise<axiosResponse> =>
+      new Promise((resolve) =>
+        resolve({
           data: Object.assign([], database)
-        });
-      });
-    },
+        })),
 
     post: (url: string, requestBody: any): Promise<axiosResponse> => {
       if(!requestBody?.id) {
@@ -20,11 +18,10 @@ function createAxiosInstance() {
       }
       database.push(requestBody);
 
-      return new Promise((resolve) => {
-        return resolve({
+      return new Promise((resolve) =>
+        resolve({
           data: Object.assign([], requestBody)
-        });
-      });
+        }));
     }
   }
 }
