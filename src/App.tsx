@@ -1,7 +1,5 @@
 import React from 'react';
 import { QueryClient, QueryClientProvider } from "react-query";
-
-import logo from './logo.svg';
 import './App.css';
 import CommentComponent from './hackernews/CommentComponent';
 
@@ -11,6 +9,9 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="App">
+        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
+          Learn React
+        </a>
         <CommentComponent />
       </div>
     </QueryClientProvider>

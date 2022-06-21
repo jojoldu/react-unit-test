@@ -1,5 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import fetchComments from './fetchComments';
+import { useMutation, useQueryClient } from 'react-query';
 import { Comment } from '../Comment';
 import postComment from './postComment';
 
