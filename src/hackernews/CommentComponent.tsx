@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import useFetchComments from './fetch/useFetchComments';
 import usePostComment from './fetch/usePostComment';
+import { QueryClient } from 'react-query';
 
-export default function CommentComponent() {
+export default function CommentComponent({ client }: {client:QueryClient}) {
   const query = useFetchComments();
-  const mutation = usePostComment();
+  const mutation = usePostComment(client);
 
   const handleClick = useCallback(
     (data:any) => {
