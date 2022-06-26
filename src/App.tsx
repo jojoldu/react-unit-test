@@ -2,6 +2,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from "react-query";
 import './App.css';
 import CommentComponent from './hackernews/CommentComponent';
+import "reflect-metadata";
 
 const queryClient = new QueryClient();
 
