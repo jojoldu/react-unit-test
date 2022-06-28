@@ -10,5 +10,3 @@ export default async function postComment(req: Comment) {
   const {data} = await axiosApi.post('/comment', comment);
   return data;
 }
-
-
