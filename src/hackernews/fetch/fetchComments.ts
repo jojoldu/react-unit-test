@@ -1,8 +1,11 @@
 import { container } from 'tsyringe';
-import AxiosHttpClient from '../../fetch-resource/http-client/AxiosHttpClient';
+import CommentService from "./CommentService";
+import AxiosHttpClient from "../../fetch-resource/http-client/AxiosHttpClient";
 
 export default async function fetchComments() {
-  const api = container.resolve(AxiosHttpClient);
-  const {data} = await api.get('/comments');
-  return data;
+/*  const api = container.resolve(AxiosHttpClient);
+  return api.get('/comments');*/
+
+  const commentService = container.resolve(CommentService);
+  return commentService.fetchComments();
 }
