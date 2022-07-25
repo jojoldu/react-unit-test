@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import type HttpClient from "../../fetch-resource/http-client/HttpClient";
+import type HttpClient from "../../api/http-client/HttpClient";
 import { Comment } from "../Comment";
 
 @injectable()

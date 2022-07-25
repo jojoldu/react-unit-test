@@ -1,4 +1,4 @@
-import { axiosApi } from '../../fetch-resource/axiosApi';
+import { axiosApi } from '../../api/axiosApi';
 import { Comment } from '../Comment';
 import { container } from "tsyringe";
 import CommentService from "./CommentService";
