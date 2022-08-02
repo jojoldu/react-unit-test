@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
-import { plainToInstance } from "class-transformer";
+import { plainToInstance } from 'class-transformer';
 
 const fetchTodos = async (): Promise<Todos> => {
   const config: AxiosRequestConfig = {
@@ -10,7 +10,7 @@ const fetchTodos = async (): Promise<Todos> => {
 
   const response = await axios.request<Todos>(config);
   return plainToInstance<Todos, AxiosResponse['data']>(Todos, response.data);
-}
+};
 
 const transformTodoNames = (data: Todos) =>
   data.todos.map((todo) => todo.name?.toUpperCase());
@@ -41,7 +41,7 @@ export class Todos {
   }
 
   get inProgressTodos() {
-    return this._todos.filter(todo => !todo.done)
+    return this._todos.filter((todo) => !todo.done);
   }
 
   get todos(): Todo[] {
