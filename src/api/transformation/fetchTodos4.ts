@@ -1,13 +1,19 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
+import { plainToInstance } from "class-transformer";
 
 const fetchTodos = async (): Promise<Todos> => {
-  const response = await axios.get('todos')
-  return response.data
+  const config: AxiosRequestConfig = {
+    url: 'todos',
+    method: 'GET',
+  };
+
+  const response = await axios.request<Todos>(config);
+  return plainToInstance<Todos, AxiosResponse['data']>(Todos, response.data);
 }
 
 const transformTodoNames = (data: Todos) =>
-  data.todos.map((todo) => todo.name.toUpperCase());
+  data.todos.map((todo) => todo.name?.toUpperCase());
 
 export const useTodosQuery = () =>
   useQuery(['todos'], fetchTodos, {
@@ -16,14 +22,14 @@ export const useTodosQuery = () =>
   });
 
 export class Todo {
-  id: number;
-  name: string;
-  done: boolean;
+  id?: number;
+  name?: string;
+  done?: boolean;
 
   constructor() {}
 
   get upperName() {
-    return this.name.toUpperCase();
+    return this.name?.toUpperCase();
   }
 }
 
