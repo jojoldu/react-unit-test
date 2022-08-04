@@ -3,9 +3,9 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 
 const fetchTodos = async (): Promise<Todos> => {
-  const response = await axios.get('todos')
-  return response.data
-}
+  const response = await axios.get("todos", options);
+  return response.data;
+};
 
 const transformTodoNames = (data: Todos) =>
   data.map((todo) => todo.name.toUpperCase());

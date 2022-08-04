@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 
 const fetchTodos = async (): Promise<Todos> => {
-  const response = await axios.get('todos')
-  return response.data
-}
+  const response = await axios.get("todos", options);
+  return response.data;
+};
 
 export const useTodosQuery = () => {
-  const queryInfo = useQuery(['todos'], fetchTodos)
+  const queryInfo = useQuery(['todos'], fetchTodos);
 
   return {
     ...queryInfo,
@@ -16,5 +16,5 @@ export const useTodosQuery = () => {
       todo.name = todo.name.toUpperCase();
       return todo;
     }),
-  }
-}
+  };
+};

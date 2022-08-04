@@ -7,7 +7,7 @@ export default class CommentService {
   constructor(@inject("HttpClient") private httpClient: HttpClient) {}
 
   async fetchComments() {
-    const {data} = await this.httpClient.get('/comments');
+    const {data} = await this.httpClient.get("/comments", options);
     return data;
   }
 
@@ -16,7 +16,7 @@ export default class CommentService {
       id: req.id,
       name: `이름${req.id}`,
     }
-    const {data} = await this.httpClient.post('/comment', comment);
+    const {data} = await this.httpClient.post("/comment", comment, options);
     return data;
   }
 }
