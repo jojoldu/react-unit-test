@@ -1,18 +1,19 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
 import { plainToInstance } from 'class-transformer';
+import { TodoClasses } from "./TodoClass";
 
-const fetchTodos = async (): Promise<Todos> => {
+const fetchTodos = async (): Promise<TodoClasses> => {
   const config: AxiosRequestConfig = {
     url: 'todos',
     method: 'GET',
   };
 
-  const response = await axios.request<Todos>(config);
-  return plainToInstance<Todos, AxiosResponse['data']>(Todos, response.data);
+  const response = await axios.request<TodoClasses>(config);
+  return plainToInstance<TodoClasses, AxiosResponse['data']>(TodoClasses, response.data);
 };
 
-const transformTodoNames = (data: Todos) =>
+const transformTodoNames = (data: TodoClasses) =>
   data.todos.map((todo) => todo.name?.toUpperCase());
 
 export const useTodosQuery = () =>
@@ -21,30 +22,3 @@ export const useTodosQuery = () =>
     select: transformTodoNames,
   });
 
-export class Todo {
-  id?: number;
-  name?: string;
-  done?: boolean;
-
-  constructor() {}
-
-  get upperName() {
-    return this.name?.toUpperCase();
-  }
-}
-
-export class Todos {
-  private _todos: Todo[];
-
-  constructor() {
-    this._todos = [];
-  }
-
-  get inProgressTodos() {
-    return this._todos.filter((todo) => !todo.done);
-  }
-
-  get todos(): Todo[] {
-    return this._todos;
-  }
-}
