@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars,no-console,@typescript-eslint/ban-ts-comment */
+
 import { useCallback, useRef } from 'react';
 import { getValues } from '../getValues';
 import { filterEnter } from '../filterEnter';
 import { filterParagraphTag } from '../filterParagraphTag';
 import { EditorFeature } from '../EditorFeature';
 
-// eslint-disable-next-line no-console
 const handleOpenModal = () => console.log('open');
 const goBackPage = useCallback(() => {}, []);
 
+// @ts-ignore
 const handleCancel = useCallback(() => {
   const editorRef = useRef<EditorFeature | null>(null);
   if (!editorRef || !editorRef.current) {
