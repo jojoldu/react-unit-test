@@ -1,6 +1,6 @@
-import { PostMeta } from './Post';
+import { PostMetaType } from './PostType';
 
-export function getValues(): PostMeta {
+export function getValues(): PostMetaType {
   return {
     tag: '',
     tags: [{ tagName: '' }],

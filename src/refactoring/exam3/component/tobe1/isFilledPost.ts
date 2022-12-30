@@ -1,4 +1,4 @@
-export function isFulfillPost(
+export function isFilledPost(
   title: string,
   tags: string[],
   tag: string,

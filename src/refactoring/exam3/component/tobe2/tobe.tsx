@@ -3,8 +3,7 @@
 import { useCallback, useRef } from 'react';
 import { getValues } from '../../getValues';
 import { EditorFeature } from '../../EditorFeature';
-import { isFilledPost } from './isFilledPost';
-import { getPost } from './getPost';
+import { Post } from './Post';
 
 const handleOpenModal = () => console.log('open');
 const goBackPage = useCallback(() => {}, []);
@@ -15,16 +14,10 @@ const handleCancel = useCallback(() => {
   if (!editorRef || !editorRef.current) {
     return;
   }
-  const { title, tags, tag } = getValues();
   const body = editorRef.current.getContent();
-  const { parsedTitle, parsedTags, parsedTag, parsedBody } = getPost(
-    title,
-    tags,
-    tag,
-    body,
-  );
+  const post = Post.of(getValues(), body);
 
-  if (isFilledPost(parsedTitle, parsedTags, parsedTag, parsedBody)) {
+  if (post.isFilledPost()) {
     handleOpenModal();
 
     return;
