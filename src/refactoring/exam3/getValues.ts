@@ -1,6 +1,6 @@
-import { Post } from './Post';
+import { PostMeta } from './Post';
 
-export function getValues(): Post {
+export function getValues(): PostMeta {
   return {
     tag: '',
     tags: [{ tagName: '' }],
