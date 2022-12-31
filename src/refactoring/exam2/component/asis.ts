@@ -5,9 +5,12 @@ import {
   EnrolmentProcessedQueryType,
 } from '../schema';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export async function getServerSideProps({ query }) {
+type Context = {
+  query: any;
+};
+
+export async function getServerSideProps(context: Context) {
+  const query = context.query;
   const pageSize = 50;
 
   const today = now();
