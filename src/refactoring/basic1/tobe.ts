@@ -1,5 +1,5 @@
-import { CompanySelling } from "./type/CompanySelling";
-import { apiSendFee } from "./api/apiSendFee";
+import { CompanySelling } from './type/CompanySelling';
+import { apiSendFee } from './api/apiSendFee';
 
 export function sendCompanyFees(companySellings: CompanySelling[]) {
   const companyFees = getCompanyFees(companySellings);
@@ -10,13 +10,13 @@ export function sendCompanyFees(companySellings: CompanySelling[]) {
 
 function getCompanyFees(companySellings: CompanySelling[]) {
   return companySellings
-    .map(c => getCompanyFee(c))
-    .filter(c => c.fee > 100); // 100원 이상이면 송금하기
+    .map((c) => getCompanyFee(c))
+    .filter((c) => c.fee > 100); // 100원 이상이면 송금하기
 }
 
 function getCompanyFee(companySelling: CompanySelling) {
   return {
     fee: companySelling.sellingAmount * companySelling.commission,
-    bankCode: companySelling.bankCode
+    bankCode: companySelling.bankCode,
   };
 }
