@@ -5,13 +5,13 @@ export function sendCompanyFees(companySellings: CompanySelling[]) {
   sendFees(companySellings);
 }
 
-function sendFees(companySellings: CompanySelling[]) {
+export function sendFees(companySellings: CompanySelling[]) {
   for (const companySelling of companySellings) {
     sendFee(companySelling);
   }
 }
 
-function sendFee(companySelling: CompanySelling) {
+export function sendFee(companySelling: CompanySelling) {
   const fee = companySelling.sellingAmount * companySelling.commission;
 
   if (fee >= 100) {

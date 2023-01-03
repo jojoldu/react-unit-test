@@ -8,10 +8,10 @@ export function sendCompanyFees(companySellings: CompanySelling[]) {
   }
 }
 
-function getCompanyFees(companySellings: CompanySelling[]) {
+export function getCompanyFees(companySellings: CompanySelling[]) {
   return companySellings
     .map((c) => getCompanyFee(c))
-    .filter((c) => c.fee > 100); // 100원 이상이면 송금하기
+    .filter((c) => c.fee >= 100); // 100원 이상이면 송금하기
 }
 
 function getCompanyFee(companySelling: CompanySelling) {
