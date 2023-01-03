@@ -1,27 +1,9 @@
 import _ from 'lodash';
+import { useSubmittedJobApplicantDetailQuery } from '../useSubmittedJobApplicantDetailQuery';
 
 interface PositionSummarySectionProps {
   applicantId: number;
 }
-
-function useSubmittedJobApplicantDetailQuery(
-  applicantId: number,
-  param: { apiVersion: number },
-) {
-  return {
-    data: {
-      positionTitle: `title-${applicantId}-${param.apiVersion}`,
-      companyName: '',
-      positionJobLevel: JobLevel.BEGINNER,
-      positionEndedAt: '',
-    },
-  };
-}
-
-const JobLevel = {
-  BEGINNER: '주니어',
-  MIDDLE: '미드레벨',
-};
 
 const PositionSummarySection = ({
   applicantId,
@@ -33,13 +15,11 @@ const PositionSummarySection = ({
     },
   );
 
-  const { positionTitle, companyName, positionJobLevel, positionEndedAt } =
-    jobApplicant;
+  const { positionTitle, companyName, positionEndedAt } = jobApplicant;
 
   const columns = [
     { title: '공고명', value: positionTitle },
     { title: '회사명', value: companyName },
-    { title: '직급', value: JobLevel[positionJobLevel] },
     { title: '마감일', value: renderPositionEndedAt(positionEndedAt) },
   ];
 
