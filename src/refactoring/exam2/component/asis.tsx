@@ -5,7 +5,14 @@ interface PositionSummarySectionProps {
   applicantId: number;
 }
 
-const PositionSummarySection = ({
+function renderPositionEndedAt(positionEndedAt: string | Date): string {
+  const date =
+    positionEndedAt instanceof Date ? String(positionEndedAt) : positionEndedAt;
+
+  return date === '9999. 12. 31.' ? '채용 시 마감' : date;
+}
+
+export const PositionSummarySection = ({
   applicantId,
 }: PositionSummarySectionProps) => {
   const { data: jobApplicant } = useSubmittedJobApplicantDetailQuery(
@@ -39,10 +46,3 @@ const PositionSummarySection = ({
     </dl>
   );
 };
-
-function renderPositionEndedAt(positionEndedAt: string | Date): string {
-  const date =
-    positionEndedAt instanceof Date ? String(positionEndedAt) : positionEndedAt;
-
-  return date === '9999. 12. 31.' ? '채용 시 마감' : date;
-}

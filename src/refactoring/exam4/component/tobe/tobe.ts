@@ -1,5 +1,6 @@
-import { firstDayOfMonth, formatDate, now } from '../dateUtil';
+import { firstDayOfMonth, formatDate, now } from '../../dateUtil';
 import { isNil } from 'lodash-es';
+import { EnrolmentPendingQueryType, EnrolmentProcessedQueryType } from './QueryType';
 
 type Context = {
   query: any;
@@ -51,27 +52,4 @@ export async function getServerSideProps(context: Context) {
       processedQueryString,
     },
   };
-}
-
-interface EnrolmentPendingQueryType {
-  pageNumber: number;
-  pageSize: number;
-  searchKeyword?: string;
-  sortType?: string;
-  sortKey?: string;
-  startedAt?: string;
-  endedAt?: string;
-  dateRangeType: string;
-}
-
-interface EnrolmentProcessedQueryType {
-  pageNumber: number;
-  pageSize: number;
-  searchKeyword?: string;
-  sortType?: string;
-  sortKey?: string;
-  startedAt?: string;
-  endedAt?: string;
-  dateRangeType: string;
-  status: string;
 }

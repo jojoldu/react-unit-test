@@ -8,8 +8,7 @@ import { Post } from './Post';
 const handleOpenModal = () => console.log('open');
 const goBackPage = useCallback(() => {}, []);
 
-// @ts-ignore
-const handleCancel = useCallback(() => {
+export const handleCancel = useCallback(() => {
   const editorRef = useRef<EditorFeature | null>(null);
   if (!editorRef || !editorRef.current) {
     return;

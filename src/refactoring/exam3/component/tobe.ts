@@ -5,11 +5,7 @@ type Context = {
   query: any;
 };
 
-export async function getServerSideProps(context: Context) {
-  const query = context.query;
-  const pageSize = 50;
-
-  const today = now();
+function getQueryParam(query: any, today = now()) {
   const firstDayOfThisMonth = firstDayOfMonth(today);
   const tab =
     query.tab === 'pending' || isNil(query.tab) ? 'pending' : 'processed';
@@ -20,6 +16,15 @@ export async function getServerSideProps(context: Context) {
     query.startedAt ?? formatDate(firstDayOfThisMonth, 'YYYY-MM-DD'),
   );
   const endedAt = String(query.endedAt ?? formatDate(today, 'YYYY-MM-DD'));
+  return { tab, pageNumber, searchKeyword, startedAt, endedAt };
+}
+
+export async function getServerSideProps(context: Context) {
+  const query = context.query;
+  const pageSize = 50;
+
+  const { tab, pageNumber, searchKeyword, startedAt, endedAt } =
+    getQueryParam(query);
 
   return {
     props: {
