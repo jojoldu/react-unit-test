@@ -1,3 +1,5 @@
+import { JobLevel } from './category';
+
 export function useSubmittedJobApplicantDetailQuery(
   applicantId: number,
   param: { apiVersion: number },
@@ -6,7 +8,7 @@ export function useSubmittedJobApplicantDetailQuery(
     data: {
       positionTitle: `title-${applicantId}-${param.apiVersion}`,
       companyName: '',
-      positionJobLevel: 'BEGINNER',
+      positionJobLevel: 'SENIOR' as keyof typeof JobLevel,
       positionEndedAt: '',
     },
   };
