@@ -1,9 +1,5 @@
 import { firstDayOfMonth, formatDate, now } from '../dateUtil';
 import { isNil } from 'lodash-es';
-import {
-  EnrolmentPendingQueryType,
-  EnrolmentProcessedQueryType,
-} from '../schema';
 
 type Context = {
   query: any;
@@ -25,34 +21,17 @@ export async function getServerSideProps(context: Context) {
   );
   const endedAt = String(query.endedAt ?? formatDate(today, 'YYYY-MM-DD'));
 
-  const pendingQueryString: EnrolmentPendingQueryType = {
-    pageNumber,
-    pageSize,
-    searchKeyword,
-    sortType: String(query.sortType ?? 'DESC'),
-    sortKey: String(query.sortKey ?? 'CREATED_AT'),
-    dateRangeType: String(query.dateRangeType ?? 'ALL_RANGE'),
-    startedAt,
-    endedAt,
-  };
-
-  const processedQueryString: EnrolmentProcessedQueryType = {
-    pageNumber,
-    pageSize,
-    searchKeyword,
-    sortType: String(query.sortType ?? 'DESC'),
-    sortKey: String(query.sortKey ?? 'PROCESSED_AT'),
-    status: String(query.status ?? 'ALL'),
-    dateRangeType: String(query.dateRangeType ?? 'SELECTED_RANGE'),
-    startedAt,
-    endedAt,
-  };
-
   return {
     props: {
       tab,
-      pendingQueryString,
-      processedQueryString,
+      pageNumber,
+      pageSize,
+      searchKeyword,
+      sortType: String(query.sortType ?? 'DESC'),
+      sortKey: String(query.sortKey ?? 'CREATED_AT'),
+      dateRangeType: String(query.dateRangeType ?? 'ALL_RANGE'),
+      startedAt,
+      endedAt,
     },
   };
 }
