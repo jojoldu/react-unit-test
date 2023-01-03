@@ -1,5 +1,6 @@
 import { CompanySelling } from '../basic1/type/CompanySelling';
 import { apiSendFee } from '../basic1/api/apiSendFee';
+import dayjs from "dayjs";
 
 export function sendCompanyFees(companySellings: CompanySelling[]) {
   const companyFees = getCompanyFees(companySellings);
@@ -8,19 +9,20 @@ export function sendCompanyFees(companySellings: CompanySelling[]) {
   }
 }
 
-function getCompanyFees(companySellings: CompanySelling[]) {
+export function getCompanyFees(companySellings: CompanySelling[]) {
   return companySellings
     .map((c) => getCompanyFee(c))
     .filter((c) => c.fee > 100); // 100원 이상이면 송금하기
 }
 
-function getCompanyFee(
+export function getCompanyFee(
   companySelling: CompanySelling,
-  requestAt = new Date().toISOString(),
+  now = dayjs(),
 ) {
+  const billedAt:string = now.add(1, 'month').format('YYYY-MM-DD');
   return {
     fee: companySelling.sellingAmount * companySelling.commission,
     bankCode: companySelling.bankCode,
-    requestAt: requestAt,
+    billedAt,
   };
 }

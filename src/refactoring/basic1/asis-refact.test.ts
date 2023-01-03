@@ -8,7 +8,7 @@ jest.mock('./api/apiSendFee');
  * 2. mocking 해야하는 API가 바뀌면 (axios -> react query, swr 등) mocking 테스트 다 교체 해야함
  * 3. 새로운 mocking 도구를 쓰려면 테스트 전체를 교체해야함
  */
-describe('asis-refact', () => {
+describe('basic1/asis-refact', () => {
   describe('sendFee', () => {
     it('100원이상이면 api를 호출한다', () => {
       // when

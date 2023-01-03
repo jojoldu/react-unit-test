@@ -1,6 +1,6 @@
 import { getCompanyFees } from "./tobe";
 
-describe('tobe', () => {
+describe('basic1/tobe', () => {
   it('spec name', () => {
     //given
     const sellings = [
