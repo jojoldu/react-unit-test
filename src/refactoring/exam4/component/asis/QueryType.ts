@@ -1,4 +1,4 @@
-export interface QueryType {
+export interface EnrolmentPendingQueryType {
   pageNumber: number;
   pageSize: number;
   searchKeyword?: string;

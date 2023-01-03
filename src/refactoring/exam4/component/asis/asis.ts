@@ -1,10 +1,7 @@
 import { firstDayOfMonth, formatDate, now } from '../../dateUtil';
 import { isNil } from 'lodash-es';
-import { EnrolmentProcessedQueryType, QueryType } from './QueryType';
-
-type Context = {
-  query: any;
-};
+import { EnrolmentPendingQueryType, EnrolmentProcessedQueryType } from './QueryType';
+import { Context } from "../../context";
 
 export async function getServerSideProps(context: Context) {
   const query = context.query;
@@ -22,7 +19,7 @@ export async function getServerSideProps(context: Context) {
   );
   const endedAt = String(query.endedAt ?? formatDate(today, 'YYYY-MM-DD'));
 
-  const pendingQueryString: QueryType = {
+  const pendingQueryString: EnrolmentPendingQueryType = {
     pageNumber,
     pageSize,
     searchKeyword,

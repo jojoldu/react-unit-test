@@ -1,10 +1,7 @@
 import { firstDayOfMonth, formatDate, now } from '../../dateUtil';
 import { isNil } from 'lodash-es';
 import { EnrolmentPendingQueryType, EnrolmentProcessedQueryType } from './QueryType';
-
-type Context = {
-  query: any;
-};
+import { Context } from "../../context";
 
 export async function getServerSideProps(context: Context) {
   const query = context.query;
