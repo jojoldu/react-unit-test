@@ -1,11 +1,9 @@
 import _ from 'lodash';
 import { useSubmittedJobApplicantDetailQuery } from '../useSubmittedJobApplicantDetailQuery';
 import { JobLevel } from '../category';
-interface PositionSummarySectionProps {
-  applicantId: number;
-}
+import { PositionSummarySectionProps } from '../positionSummarySectionProps';
 
-function renderPositionEndedAt(positionEndedAt: string | Date): string {
+export function renderPositionEndedAt(positionEndedAt: string | Date): string {
   const date =
     positionEndedAt instanceof Date ? String(positionEndedAt) : positionEndedAt;
 
