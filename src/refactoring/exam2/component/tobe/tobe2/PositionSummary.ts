@@ -1,5 +1,17 @@
 import { JobLevel } from '../../../category';
 
+// @ts-ignore
+export function getPositionSummary(jobApplicant): PositionColumn[] {
+  const { positionTitle, companyName, positionJobLevel, positionEndedAt } =
+    jobApplicant;
+  return [
+    new PositionColumn('공고명', positionTitle),
+    new PositionColumn('회사명', companyName),
+    PositionColumn.newJobLevel(positionJobLevel),
+    PositionColumn.newEndedAt(positionEndedAt),
+  ];
+}
+
 export class PositionSummary {
   private readonly _columns: PositionColumn[] = [];
 

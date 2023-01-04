@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { PositionSummarySectionProps } from '../../../positionSummarySectionProps';
 import { useSubmittedJobApplicantDetailQuery } from '../../../useSubmittedJobApplicantDetailQuery';
-import { PositionSummary } from './PositionSummary';
+import { getPositionSummary, PositionSummary } from './PositionSummary';
 
 export const PositionSummarySection = ({
   applicantId,
@@ -14,6 +14,7 @@ export const PositionSummarySection = ({
   );
 
   const columns = PositionSummary.byJobApplicant(jobApplicant).columns;
+  // const columns = getPositionSummary(jobApplicant);
 
   return (
     <dl>
