@@ -1,25 +1,7 @@
 import _ from 'lodash';
 import { PositionSummarySectionProps } from '../../../positionSummarySectionProps';
 import { useSubmittedJobApplicantDetailQuery } from '../../../useSubmittedJobApplicantDetailQuery';
-import { renderPositionEndedAt } from '../tobe1/renderPositionEndedAt';
-import { JobLevel } from '../../../category';
-
-function getColumns(
-  positionTitle: string,
-  companyName: string,
-  positionJobLevel: 'IRRELEVANT' | 'INTERN' | 'BEGINNER' | 'JUNIOR' | 'SENIOR',
-  positionEndedAt: string,
-) {
-  return [
-    { title: '공고명', value: positionTitle },
-    { title: '회사명', value: companyName },
-    {
-      title: '직급',
-      value: JobLevel[positionJobLevel],
-    },
-    { title: '마감일', value: renderPositionEndedAt(positionEndedAt) },
-  ];
-}
+import { PositionSummary } from './PositionSummary';
 
 export const PositionSummarySection = ({
   applicantId,
@@ -31,14 +13,7 @@ export const PositionSummarySection = ({
     },
   );
 
-  const { positionTitle, companyName, positionJobLevel, positionEndedAt } =
-    jobApplicant;
-  const columns = getColumns(
-    positionTitle,
-    companyName,
-    positionJobLevel,
-    positionEndedAt,
-  );
+  const columns = PositionSummary.byJobApplicant(jobApplicant).columns;
 
   return (
     <dl>

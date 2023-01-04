@@ -1,12 +1,24 @@
 import { JobLevel } from '../../../category';
 
 export class PositionSummary {
-  private readonly _properties: PositionProperty[] = [];
+  private readonly _columns: PositionColumn[] = [];
 
-  constructor(properties: PositionProperty[]) {
-    this._properties = properties;
+  constructor(properties: PositionColumn[]) {
+    this._columns = properties;
   }
 
+  // @ts-ignore
+  static byJobApplicant(jobApplicant) {
+    const { positionTitle, companyName, positionJobLevel, positionEndedAt } =
+      jobApplicant;
+
+    return this.of(
+      positionTitle,
+      companyName,
+      positionJobLevel,
+      positionEndedAt,
+    );
+  }
   static of(
     positionTitle: string,
     companyName: string,
@@ -19,19 +31,19 @@ export class PositionSummary {
     positionEndedAt: string,
   ) {
     return new PositionSummary([
-      new PositionProperty('공고명', positionTitle),
-      new PositionProperty('회사명', companyName),
-      PositionProperty.newJobLevel(positionJobLevel),
-      PositionProperty.newEndedAt(positionEndedAt),
+      new PositionColumn('공고명', positionTitle),
+      new PositionColumn('회사명', companyName),
+      PositionColumn.newJobLevel(positionJobLevel),
+      PositionColumn.newEndedAt(positionEndedAt),
     ]);
   }
 
-  get properties(): PositionProperty[] {
-    return this._properties;
+  get columns(): PositionColumn[] {
+    return this._columns;
   }
 }
 
-class PositionProperty {
+class PositionColumn {
   private readonly _title: string;
   private readonly _value: string;
 
@@ -43,7 +55,7 @@ class PositionProperty {
   static newEndedAt(endedAt: string | Date) {
     const date = endedAt instanceof Date ? String(endedAt) : endedAt;
 
-    return new PositionProperty(
+    return new PositionColumn(
       '마감일',
       date === '9999. 12. 31.' ? '채용 시 마감' : date,
     );
@@ -52,7 +64,7 @@ class PositionProperty {
   static newJobLevel(
     jobLevel: 'IRRELEVANT' | 'INTERN' | 'BEGINNER' | 'JUNIOR' | 'SENIOR',
   ) {
-    return new PositionProperty('직급', JobLevel[jobLevel]);
+    return new PositionColumn('직급', JobLevel[jobLevel]);
   }
 
   get title(): string {
