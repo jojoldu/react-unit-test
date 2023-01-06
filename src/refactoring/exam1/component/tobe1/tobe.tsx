@@ -15,7 +15,8 @@ export const handleCancel = useCallback(() => {
     return;
   }
   const { title, tags, tag } = getValues();
-  const body = editorRef.current.getContent();
+  const body = editorRef.current.getContent(); // 부수효과 함수
+
   const { parsedTitle, parsedTags, parsedTag, parsedBody } = getPost(
     title,
     tags,

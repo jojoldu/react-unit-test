@@ -13,8 +13,8 @@ export const PositionSummarySection = ({
     },
   );
 
-  const columns = PositionSummary.byJobApplicant(jobApplicant).columns;
-  // const columns = getPositionSummary(jobApplicant);
+  // const columns = PositionSummary.byJobApplicant(jobApplicant).columns;
+  const columns = getPositionSummary(jobApplicant);
 
   return (
     <dl>

@@ -19,6 +19,10 @@ export class Post {
     return new Post(postMeta.tag, postMeta.tags, postMeta.title, body);
   }
 
+  get tag(): string {
+    return this._tag;
+  }
+
   isFilledPost() {
     return (
       this._title !== '' ||

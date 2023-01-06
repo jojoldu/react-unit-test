@@ -1,4 +1,4 @@
-import { getCompanyFees } from "./tobe";
+import { getCompanyFees } from './tobe';
 
 describe('basic1/tobe', () => {
   it('spec name', () => {
@@ -7,14 +7,14 @@ describe('basic1/tobe', () => {
       {
         sellingAmount: 1000,
         commission: 0.1,
-        bankCode: '032'
+        bankCode: '032',
       },
       {
         sellingAmount: 100,
         commission: 0.1,
-        bankCode: '032'
-      }
-    ]
+        bankCode: '032',
+      },
+    ];
 
     // when
     const result = getCompanyFees(sellings);

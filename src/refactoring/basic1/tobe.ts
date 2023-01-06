@@ -1,13 +1,15 @@
 import { CompanySelling } from './type/CompanySelling';
 import { apiSendFee } from './api/apiSendFee';
 
+// 부수효과
 export function sendCompanyFees(companySellings: CompanySelling[]) {
   const companyFees = getCompanyFees(companySellings);
   for (const companyFee of companyFees) {
     apiSendFee(companyFee.bankCode, companyFee.fee);
   }
 }
-
+// ---------------------------------------------------------------------
+// 순수함수
 export function getCompanyFees(companySellings: CompanySelling[]) {
   return companySellings
     .map((c) => getCompanyFee(c))

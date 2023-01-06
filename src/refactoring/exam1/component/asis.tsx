@@ -14,7 +14,7 @@ export const handleCancel = useCallback(() => {
   if (!editorRef || !editorRef.current) {
     return;
   }
-  const { title, tags, tag } = getValues();
+  const { title, tags, tag } = getValues(); // 외부에서 값을 가져오는 함수
 
   const parsedTitle = filterEnter(title).trim();
   const parsedTags = tags.map(({ tagName }) => tagName);
