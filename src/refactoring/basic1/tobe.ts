@@ -2,10 +2,10 @@ import { CompanySelling } from './type/CompanySelling';
 import { apiSendFee } from './api/apiSendFee';
 
 // 부수효과
-export function sendCompanyFees(companySellings: CompanySelling[]) {
+export async function sendCompanyFees(companySellings: CompanySelling[]) {
   const companyFees = getCompanyFees(companySellings);
   for (const companyFee of companyFees) {
-    apiSendFee(companyFee.bankCode, companyFee.fee);
+    await apiSendFee(companyFee.bankCode, companyFee.fee);
   }
 }
 // ---------------------------------------------------------------------
