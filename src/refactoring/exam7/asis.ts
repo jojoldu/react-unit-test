@@ -1,3 +1,5 @@
+import { SearchPostResponse } from './SearchPostResponse';
+
 export class StudyQueryService {
   private readonly studySearchUri: string;
 
@@ -60,7 +62,7 @@ export class StudyQueryService {
   async findByLecture(
     request: LecturePostRequest,
   ): Promise<Slice<LecturePostResponse>> {
-    const searchPostResponse = await this.webClientService
+    const searchItems = await this.webClientService
       .create()
       .get()
       .uri(request.toRequestUri(this.studySearchUri))
@@ -69,14 +71,14 @@ export class StudyQueryService {
 
     const [writers, postCountDto, reactionDto] = await Promise.all([
       this.userQueryRepository.findWithThumbnail(
-        searchPostResponse.items.map((item) => item.writer?.id || 0),
+        searchItems.items.map((item) => item.writer?.id || 0),
       ),
       this.postCountQueryRepository.findByPostIds(
-        searchPostResponse.items.map((item) => item.id),
+        searchItems.items.map((item) => item.id),
       ),
       request.userId
         ? this.reactionQueryService.findPostReactions(
-          searchPostResponse.items.map((item) => item.id),
+          searchItems.items.map((item) => item.id),
           request.userId,
         )
         : undefined,
@@ -84,33 +86,10 @@ export class StudyQueryService {
 
     return new Slice(
       request.sliceSize,
-      searchPostResponse.items.map(
+      searchItems.items.map(
         (item) =>
           new LecturePostResponse(item, writers, postCountDto, reactionDto),
       ),
-    );
-  }
-
-  async findLatest(request: CommunityPostRequest): Promise<SearchPostResponse> {
-    const [posts, total] = await this.postQueryRepository.findLatest(
-      PostType.STUDY,
-      request,
-    );
-    const postIds = posts.map((post) => post.id);
-    const [tagDto, postCountDto] = await Promise.all([
-      this.tagQueryRepository.findByPosts(postIds),
-      this.postCountQueryRepository.findByPostIds(postIds),
-    ]);
-
-    return SearchPostResponse.of(
-      posts.map((post) =>
-        SearchPostItem.of(
-          post,
-          postCountDto.getViewCountBy(post.id),
-          tagDto.getTags(post.id),
-        ),
-      ),
-      total,
     );
   }
 }
