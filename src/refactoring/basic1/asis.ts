@@ -1,5 +1,6 @@
 import { CompanySelling } from './type/CompanySelling';
 import { apiSendFee } from './api/apiSendFee';
+import { Modal } from './Modal';
 
 export async function sendCompanyFees(companySellings: CompanySelling[]) {
   for (const companySelling of companySellings) {
@@ -10,4 +11,6 @@ export async function sendCompanyFees(companySellings: CompanySelling[]) {
       await apiSendFee(companySelling.bankCode, fee);
     }
   }
+
+  Modal.open(`${companySellings.length} 개 기업들에게 송금되었습니다.`);
 }
