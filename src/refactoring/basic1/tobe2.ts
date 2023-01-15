@@ -1,6 +1,7 @@
 import { CompanySelling } from './type/CompanySelling';
 import { apiSendFee } from './api/apiSendFee';
 import { Modal } from './Modal';
+import { CompanyFee } from './CompanyFee';
 
 export async function sendCompanyFees(companySellings: CompanySelling[]) {
   const companyFees = getCompanyFees(companySellings);
@@ -13,16 +14,9 @@ export async function sendCompanyFees(companySellings: CompanySelling[]) {
 export function getCompanyFees(companySellings: CompanySelling[]) {
   return companySellings
     .map((c) => getCompanyFee(c))
-    .filter((c) => isSend(c));
-}
-
-function isSend(c: { bankCode: string; fee: number }) {
-  return c.fee >= 100;
+    .filter((c) => c.isSend); // 송금 가능 조건을 굳이 몰라도 됨
 }
 
 function getCompanyFee(companySelling: CompanySelling) {
-  return {
-    fee: companySelling.sellingAmount * companySelling.commission,
-    bankCode: companySelling.bankCode,
-  };
+  return new CompanyFee(companySelling);
 }

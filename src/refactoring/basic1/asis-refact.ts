@@ -14,10 +14,14 @@ export async function sendFees(companySellings: CompanySelling[]) {
 }
 
 export async function sendFee(companySelling: CompanySelling) {
-  const fee = companySelling.sellingAmount * companySelling.commission;
+  const fee = getFee(companySelling);
 
   if (fee >= 100) {
     // 100원 이상이면 송금하기
     await apiSendFee(companySelling.bankCode, fee);
   }
+}
+
+function getFee(companySelling: CompanySelling) {
+  return companySelling.sellingAmount * companySelling.commission;
 }
