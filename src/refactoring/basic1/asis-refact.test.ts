@@ -1,5 +1,5 @@
 import { sendFee, sendFees } from './asis-refact';
-import { apiSendFee } from './api/apiSendFee';
+import { axiosSendFee } from './api/axiosSendFee';
 
 jest.mock('./api/apiSendFee');
 
@@ -14,7 +14,7 @@ describe('basic1/asis-refact', () => {
       });
 
       // then
-      expect(apiSendFee).toBeCalledTimes(1);
+      expect(axiosSendFee).toBeCalledTimes(1);
     });
 
     it('100원미만이면 api를 호출하지 않는다', async () => {
@@ -26,7 +26,7 @@ describe('basic1/asis-refact', () => {
       });
 
       //then
-      expect(apiSendFee).toBeCalledTimes(0);
+      expect(axiosSendFee).toBeCalledTimes(0);
     });
   });
 
@@ -50,7 +50,7 @@ describe('basic1/asis-refact', () => {
       await sendFees(sellings);
 
       // then
-      expect(apiSendFee).toBeCalledTimes(1);
+      expect(axiosSendFee).toBeCalledTimes(1);
     });
   });
 });

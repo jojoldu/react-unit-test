@@ -1,11 +1,11 @@
 import { CompanySelling } from '../basic1/type/CompanySelling';
-import { apiSendFee } from '../basic1/api/apiSendFee';
+import { axiosSendFee } from '../basic1/api/axiosSendFee';
 import dayjs from 'dayjs';
 
 export function sendCompanyFees(companySellings: CompanySelling[]) {
   const companyFees = getCompanyFees(companySellings);
   for (const companyFee of companyFees) {
-    apiSendFee(companyFee.bankCode, companyFee.fee);
+    axiosSendFee(companyFee.bankCode, companyFee.fee);
   }
 }
 

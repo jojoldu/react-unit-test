@@ -1,5 +1,5 @@
 import { CompanySelling } from './type/CompanySelling';
-import { apiSendFee } from './api/apiSendFee';
+import { axiosSendFee } from './api/axiosSendFee';
 import { Modal } from './Modal';
 
 export async function sendCompanyFees(companySellings: CompanySelling[]) {
@@ -7,7 +7,7 @@ export async function sendCompanyFees(companySellings: CompanySelling[]) {
     const fee = companySelling.sellingAmount * companySelling.commission;
 
     if (fee >= 100) {
-      await apiSendFee(companySelling.bankCode, fee);
+      await axiosSendFee(companySelling.bankCode, fee);
     }
   }
 
