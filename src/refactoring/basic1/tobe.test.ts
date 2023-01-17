@@ -1,7 +1,7 @@
 import { getCompanyFees } from './tobe';
 
 describe('basic1/tobe', () => {
-  it('spec name', () => {
+  it('100원 이상인 수수료만 반환된다', () => {
     //given
     const sellings = [
       {
