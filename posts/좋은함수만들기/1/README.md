@@ -219,26 +219,45 @@ describe('sendFees', () => {
 });
 ```
 
-4개의 함수로 추출했지만, 그 어느 함수도 편하게 테스트를 작성할 수 있는 함수가 없다.  
+함수가 하나의 기능만 하도록 변경하고, 4개의 함수로 추출했지만, 그 어느 함수도 편하게 테스트를 작성할 수 있는 함수가 없다.  
 어떻게 리팩토링을 했어야하는 것일까?
 
 ## 리팩토링 2 (Good)
 
-현재의 테스트
+현재의 테스트를 어렵게 만드는 것은 무엇인가?  
+바로 외부에 영향을 끼치는 `axiosSendFee` 가 **함수 내부에 깊게 들어와있기 때문**이다.
+(`axiosSendFee`와 같이 함수 밖의 결과에 영향을 끼치는 것이 **암묵적 출력**이라 하며, 반대로 외부의 결과를 가져오는 **암묵적 입력**이라 한다.)  
+  
+함수를 추출하긴 했지만, **외부에 영향을 끼치는 외부 의존성**이 비즈니스 로직에서 가장 핵심이 되는 `sendFee` 함수가 이에 의존하고 있기 때문에, `sendFee` 를 호출하는 다른 모든 함수들까지 테스트가 어려워졌다.  
+
+테스트 하기 어려운 **부작용 함수는 전염성이 높다**.
+테스트하기 어려운 함수 하나가 만들어지고, 해당 함수에 의존하게 되면 **의존하는 함수들 까지도 테스트가 어려워진다**.  
+   
+그래서 이를 해결하기 위해서는 **부작용 함수와 순수 함수를 격리**시켜야 한다.
 
 ```ts
+----------------- 부작용 함수 ----------------------------
 export async function sendCompanyFees(companySellings: CompanySelling[]) {
+  await sendFees(companySellings);
+  Modal.open(`${companySellings.length} 개 기업들에게 송금되었습니다.`);
+}
+
+async function sendFees(companySellings: CompanySelling[]) {
   const companyFees = getCompanyFees(companySellings);
   for (const companyFee of companyFees) {
     await axiosSendFee(companyFee.bankCode, companyFee.fee);
   }
 }
-// ---------------------------------------------------------------------
-// 순수함수
+
+----------------- 순수함수 ----------------------------
 export function getCompanyFees(companySellings: CompanySelling[]) {
   return companySellings
     .map((c) => getCompanyFee(c))
-    .filter((c) => c.fee >= 100); // 100원 이상이면 송금하기
+    .filter((c) => isSend(c));
+}
+
+function isSend(c: { fee: number }) {
+  return c.fee >= 100;
 }
 
 function getCompanyFee(companySelling: CompanySelling) {
@@ -247,6 +266,35 @@ function getCompanyFee(companySelling: CompanySelling) {
     bankCode: companySelling.bankCode,
   };
 }
+```
+
+이렇게 작성되면 2개의 부작용 (Side Effect) 를 제외한 **나머지 로직들이 모두 순수 함수**의 영역에 존재한다.
+  
+이들은 **Mocking 없이도 전체 기능을 테스트 코드로 검증**할 수 있다.
+
+```ts
+it('spec name', () => {
+  //given
+  const sellings = [
+    {
+      sellingAmount: 1000,
+      commission: 0.1,
+      bankCode: '032',
+    },
+    {
+      sellingAmount: 100,
+      commission: 0.1,
+      bankCode: '032',
+    },
+  ];
+
+  // when
+  const result = getCompanyFees(sellings);
+
+  // then
+  expect(result).toHaveLength(1);
+  expect(result[0].fee).toBe(100);
+});
 ```
 
 누군가는 이 개선건에 대해 순회가 2번 이루어지기 때문에 비효율적인게 아니냐고 할 수 있다.  
