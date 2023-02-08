@@ -6,7 +6,8 @@ export type Alarm = {
 };
 
 export function main(errorCount: number) {
-  const alarm = fetchAlarm('user');
+  const type = 'user';
+  const alarm = fetchAlarm(type);
   alarm.errorCount = errorCount;
 
   if (alarm.errorCount > alarm.limit) {
@@ -14,7 +15,7 @@ export function main(errorCount: number) {
   }
 
   showModal(
-    `user incident! errorCount=${errorCount} ${
+    `${type} incident! errorCount=${errorCount} ${
       alarm.isTooHigh ? 'too high' : ''
     }`,
   );
