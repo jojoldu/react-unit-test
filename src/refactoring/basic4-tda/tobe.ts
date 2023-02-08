@@ -1,14 +1,27 @@
+/* eslint-disable */
+import { showModal } from './showModal';
+
+export function main(errorCount: number) {
+  const name = 'user';
+  const alarm = fetchAlarm(name);
+  alarm.errorCount = errorCount;
+
+  showModal(alarm.message);
+}
+
+export function fetchAlarm(type: string): Alarm {
+  return Alarm.of(type, 2);
+}
+
 export class Alarm {
-  private _type: string;
   private _name: string;
   private _limit: number;
   private _errorCount = 0;
 
   constructor() {}
 
-  static of(type: string, name: string, limit: number): Alarm {
+  static of(name: string, limit: number): Alarm {
     const alarm = new Alarm();
-    alarm._type = type;
     alarm._name = name;
     alarm._limit = limit;
 
@@ -35,7 +48,7 @@ export class Alarm {
   }
 
   get message(): string {
-    return `${this._type} incident! errorCount=${this._errorCount} ${
+    return `${this._name} incident! errorCount=${this._errorCount} ${
       this.isTooHigh ? 'too high' : ''
     }`;
   }
