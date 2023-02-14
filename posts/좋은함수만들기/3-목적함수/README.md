@@ -1,4 +1,7 @@
-# 3. 좋은 함수 만들기 - 선언형
+# 3. 좋은 함수 만들기 - 목적 달성 함수
+
+
+
 
 - 명령형 (Imperative) = 절차형 = **구체적**
   - 프로그램의 상태를 변경하는 명령문을 사용하는 프로그래밍 패러다임
@@ -24,13 +27,13 @@ function getMainTitle(): string | null {
       if (text !== null) {
         return text.innerText
       } else {
-        return null
+        return '';
       }
     } else {
-      return null
+      return '';
     }
   } else {
-    return null
+    return '';
   }
 }
 ```
@@ -42,6 +45,54 @@ function getMainTitle(): string | null {
     ?.querySelector<HTMLElement>('.title-text')
     ?.innerText
 }
+```
+
+
+## 실제 예제
+
+```ts
+  private async successResponse<ApiResponse>(response: Response) {
+    if (!response.ok) {
+      const responseJson = await response.text();
+      this.log({
+        level: 'error',
+        status: `${response.status} error`,
+        url: response.url,
+        data: responseJson,
+        handled: false,
+      });
+
+      throw new ApiError({
+        statusCode: response.status.toString(),
+        message: response.statusText,
+        data: null,
+      });
+    }
+
+    const data = (await response.json()) as ApiResponse | Error;
+
+    if (this.isErrorResponse(data)) {
+      const level = this.infoLevelError(data.statusCode) ? 'info' : 'error';
+
+      this.log({
+        level,
+        status: `${response.status} error ${data.statusCode}: ${data.message}`,
+        url: response.url,
+        handled: true,
+      });
+
+      throw new ApiError({
+        ...data,
+        statusCode: data.statusCode,
+      });
+    }
+
+    return data;
+  }
+```
+
+```ts
+
 ```
 
 ## 참고자료
