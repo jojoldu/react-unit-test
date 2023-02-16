@@ -6,4 +6,5 @@ export function main(e) {
     (el) => el.value,
     filter((el) => el.checked, $.findAll(`input[data-type="${type}"]`, parent)),
   ).join(',');
+  re_render(getQ({ [type]: filtered, page: 1 }));
 }

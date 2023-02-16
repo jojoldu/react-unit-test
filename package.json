@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "class-transformer": "^0.5.1",
     "dayjs": "^1.11.7",
+    "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
