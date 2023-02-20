@@ -1,15 +1,4 @@
-export type VoucherOrder = {
-  carts: Cart[];
-};
-
-export type Cart = {
-  discount: Discount;
-  coupon_id: number;
-};
-
-export type Discount = {
-  dis1: number;
-};
+import { VoucherOrder } from './voucherOrder';
 
 export const voucherOrderDTO = (voucherOrder: VoucherOrder) => {
   if (!voucherOrder) {
