@@ -1,5 +1,13 @@
 import { Cart } from '../voucherOrder';
 
+export function sumVoucherProductAmount(carts: Cart[]): number {
+  return sumVoucherAmountBy((cart) => !cart.coupon_id, carts);
+}
+
+export function sumVoucherCouponAmount(carts: Cart[]): number {
+  return sumVoucherAmountBy((cart) => !!cart.coupon_id, carts);
+}
+
 export function sumVoucherAmountBy(
   predicate: (value: Cart, index: number, array: Cart[]) => boolean,
   carts: Cart[],
