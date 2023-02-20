@@ -1,6 +1,8 @@
 # if문 정리하기
 
 
+기획, 사용자 스토리 그대로 코드를 옮기지 말 것.
+
 ## Default Parameter
 
 ## return with boolean
