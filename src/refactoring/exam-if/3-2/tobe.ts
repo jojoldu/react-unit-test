@@ -54,11 +54,7 @@ function getVote(
     return null;
   }
 
-  if (
-    beforeVote === null ||
-    beforeVote === JobApplicantVoteStatusCode.CANCEL_DOWN ||
-    beforeVote === JobApplicantVoteStatusCode.CANCEL_UP
-  ) {
+  if (beforeVote === null || hasCancelVoteStatus(beforeVote)) {
     return currentVote === JobApplicantVoteStatusCode.UP ? Vote.UP : Vote.DOWN;
   }
 

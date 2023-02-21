@@ -3,6 +3,7 @@ import { getFee } from './getFee';
 
 export async function calculateFee(userId: number) {
   const user = await fetchUser(`/api/user?id=${userId}`);
+
   if (user) {
     if (user.level === 'GREEN' || user.level === 'RED') {
       if (user.region === 'SEOUL') {

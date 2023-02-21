@@ -11,7 +11,7 @@ export const voucherOrderDTO = (voucherOrder: VoucherOrder) => {
   voucherOrder.carts.forEach(({ discount, coupon_id }) => {
     const isDiscountOfCoupon = !!coupon_id;
 
-    // Optional Channing 없는 경우
+    // Optional Channing 없는 Node12
     let discount1 = 0;
     if (discount !== null && discount !== undefined) {
       discount1 = discount.dis1 || 0;
