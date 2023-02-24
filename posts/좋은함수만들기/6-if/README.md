@@ -1,96 +1,112 @@
-# if문 정리하기
+# 3. 좋은 함수 만들기 - if 개선하기
 
 
 기획, 사용자 스토리 그대로 코드를 옮기지 말 것.
 
 ## Default Parameter
 
-## return with boolean
 
 ```ts
-  const canBeSelected = useCallback(
-    (value) => {
-      if (selectedJobs.has(value)) {
-        return true;
-      }
-
-      if (selectedJobs.size !== LIMIT_OF_SELECTING_JOBS) {
-        return true;
-      }
-
-      return false;
-    },
-    [selectedJobs]
-  );
+export function sumAnything(
+  num1: number,
+  num2: number,
+  etc: number | undefined,
+) {
+  if (etc === undefined) {
+    return num1 + num2;
+  } else {
+    return num1 + num2 + etc;
+  }
+}
 ```
 
-```ts
-  const canBeSelected = useCallback(
-    (value) => {
-      if (selectedJobs.has(value)) {
-        return true;
-      }
+JS/TS에서는 `undefined` 는 Default Parameter로 대신할 수 있다.  
+(`null` 은 지원하지 않는다.)
 
-      return selectedJobs.size !== LIMIT_OF_SELECTING_JOBS;
-    },
-    [selectedJobs]
-  );
+```ts
+export function sumAnything(num1: number, num2: number, etc = 0) {
+  return num1 + num2 + etc;
+}
+```
+
+다음과 같이 호출할 경우 모두 정상적으로 `undefined` 가 `0` 을 사용한다.
+
+```ts
+  it('호출 파라미터가 없으면 기본 파라미터가 사용된다', () => {
+    const result = sumAnything(1, 2);
+    expect(result).toBe(3);
+  });
+
+  it('undefined로 넘기면 기본 파라미터가 사용된다', () => {
+    const result = sumAnything(1, 2, undefined);
+    expect(result).toBe(3);
+  });
+```
+
+만약 `null` 등 여러 경우를 고려해서 진행해야한다면 어쩔 수없이 `OR (|)` 연산자를 이용한다.
+
+
+## return with boolean
+
+요구사항
+- **입력값 이상의 숫자가 하나라도 있으면** `false` 를 반환해주세요.
+
+이 요구사항에 맞게 구현을 해보자.
+
+```ts
+export function isAllUnderBy(numbers: number[], limit) {
+  for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] >= limit) {
+      return false;
+    }
+  }
+  return true;
+}
+```
+
+하지만 이 요구사항을 반대로 고려해보자.
+
+-  **모든 숫자가 입력값 보다 미만일 경우**에만 `true` 를 반환해주세요.
+
+```ts
+export function isAllUnderBy(numbers: number[], limit: number) {
+  return numbers.every((n) => n < limit: number);
+}
 ```
 
 ## Early Exit (Guard Clauses)
 
 컴퓨터 프로그래밍에서 가드는 해당 분기에서 프로그램 실행을 계속하려면 참으로 평가되어야 하는 부울 표현식이다.
 
-```ts
-private doSomething() {
-    if (everythingIsGood()) {
+요구사항은 다음과 같다
 
-        /*
-         * Lots and lots of code here!!!
-         */
-
-        return SOME_VALUE;
-    } else {
-        return ANOTHER_VALUE;  // a special case
-    }
-}
-```
+- API에서 가져온 `User`가 있을 경우
+  - 해당 User의 `level`이 `GREEN | RED` 인 경우
+    - 해당 User의 `region` 이 `SEOUL` 이면 수수료를 계산해서 반환
+    - 해당 User의 `region` 이 `SEOUL` 이 아니면 `Not Seoul Region` 에러 메세지를 반환
+  - 해당 User의 `level`이 `GREEN | RED` 가 아닌 경우 ` Not GREEN or RED Level` 에러 메세지 반환
+- API에서 가져온 `User`가 없을 경우 `User NotFound!` 에러 메세지를 반환
 
 ```ts
-private  doSomething() {
-    if (!everythingIsGood()){ // <-- this is your guard clause
-        return ANOTHER_VALUE;
-    }
-    /*
-     * Lots and lots of code here!!!
-     */
+export async function calculateFee(userId: number) {
+  const user = await fetchUser(`/api/user?id=${userId}`);
 
-    return SOME_VALUE;
-}
-```
-
-
-```ts
-function calculateInsurance(userID: number){
-    const user = myDB.findOne(userID);
-    if(user){
-      if(user.insurance === 'Allianz' or user.insurance === 'AXA'){
-         if(user.nationality === 'Spain'){
-            const value = /***
-              Complex Algorithm
-            */
-            return value;
-         }else{
-            throw new UserIsNotSpanishException(user);
-         }
-      }else{
-       throw new UserInsuranceNotFoundException(user);
+  if (user) {
+    if (user.level === 'GREEN' || user.level === 'RED') {
+      if (user.region === 'SEOUL') {
+        return getFee(user);
       }
-    }else{
-     throw new UserNotFoundException('User NotFound!');
+      throw new Error(`${userId} is Not Seoul Region`);
+    } else {
+      throw new Error(`${userId} is Not GREEN or RED Level`);
     }
+  } else {
+    throw new Error('User NotFound!');
+  }
 }
 ```
+
+
 
 ```ts
 function calculateInsurance(userID: number){
