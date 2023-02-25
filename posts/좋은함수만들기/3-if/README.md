@@ -87,6 +87,8 @@ export function isAllUnderBy(numbers: number[], limit: number) {
   - 해당 User의 `level`이 `GREEN | RED` 가 아닌 경우 ` Not GREEN or RED Level` 에러 메세지 반환
 - API에서 가져온 `User`가 없을 경우 `User NotFound!` 에러 메세지를 반환
 
+이와 같은 요구사항을 기반으로 코드를 작성하면 다음과 같다.
+
 ```ts
 export async function calculateFee(userId: number) {
   const user = await fetchUser(`/api/user?id=${userId}`);
@@ -96,35 +98,36 @@ export async function calculateFee(userId: number) {
       if (user.region === 'SEOUL') {
         return getFee(user);
       }
-      throw new Error(`${userId} is Not Seoul Region`);
+      throw new UserRegionError(`${userId} is Not Seoul Region`);
     } else {
-      throw new Error(`${userId} is Not GREEN or RED Level`);
+      throw new UserLevelError(`${userId} is Not GREEN or RED Level`);
     }
   } else {
-    throw new Error('User NotFound!');
+    throw new NotFoundError('User NotFound!');
   }
 }
 ```
 
+**원하는 상태가 아닐때마다 그에 따른 적절한 Exception을 발생**시켜야하기 때문에 자주 `if else`가 중첩될 수 밖에 없다.
 
 
 ```ts
-function calculateInsurance(userID: number){
-    const user = myDB.findOne(userID);
-    if(!user){
-      throw new UserNotFoundException('User NotFound!');
-    }
-    if(!(user.insurance === 'Allianz' || user.insurance === 'AXA')){
-       throw new UserInsuranceNotFoundException(user);
-    }
-    if(user.nationality !== 'Spanish'){
-       throw new UserIsNotSpanishException(user);
-    }
+export async function calculateFee(userId: number) {
+  const user = await fetchUser(`/api/user?id=${userId}`);
 
-    const value = /***
-          Complex Algorithm
-        */
-    return value;
+  if (!user) {
+    throw new NotFoundError('User NotFound!');
+  }
+
+  if (user.level !== 'GREEN' && user.level !== 'RED') {
+    throw new UserLevelError(`${userId} is Not GREEN or RED Level`);
+  }
+
+  if (user.region !== 'SEOUL') {
+    throw new UserRegionError(`${userId} is Not Seoul Region`);
+  }
+
+  return getFee(user);
 }
 ```
 
@@ -132,10 +135,6 @@ function calculateInsurance(userID: number){
 주요 비즈니스 로직은 항상 낮은 depth에서 수행하도록 한다.
 
 
-
-## Null Object Pattern
-
-중첩 조건이면서 `!=null && !=undefined` 가 함께하는 코드가 많다면 고민해볼 수 있다.
 
 ## 마무리
 
