@@ -36,3 +36,8 @@
 - async 가 선언된 경우
 
 ![inout1](./images/inout1.png)
+
+
+부수 효과가 없다는 것
+- 인자값과 반환값 둘 다 있으면서
+async 가 없는 경우
