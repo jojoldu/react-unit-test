@@ -62,34 +62,76 @@
 - 브라우저 Windows 함수를 호출하는 경우
 
 
-###3 부작용 함수
+### 1-3. 암묵적 입력과 출력
+
+정리하면 다음과 같은 경우 우린 부작용이 있는 함수라고 부를 수 있다.
 
 - 인자값이 없는데 반환값이 있는 경우
 - 인자값이 있는데 반환값이 없는 경우
 - 인자값과 반환값 둘 다 없는 경우
-- async 가 선언된 경우
+
+인자값과 반환 둘 다 없는 경우는 다음과 같다.
 
 ![inout1](./images/inout1.png)
 
+암묵적 입력과 출력 모두가 존재하는 부작용 함수의 경우이다.  
 
-부수 효과가 없다는 것
-- 인자값과 반환값 둘 다 있으면서
-- async 가 없는 경우
+암묵적 입력 혹은 출력을 가진 부작용 함수를 찾는 가장 쉬운 방법이 있다.  
+암묵적 입력과 출력들의 경우를 보면 **대부분 비동기 함수**라는 것들을 알 수 있다.  
+즉, `async` 가 필요한 경우 이 함수들은 예외없이 모두 **부작용 함수**이다.  
+  
+물론 **async가 없다고해서 모두가 부작용이 없는 함수인 것은 아니다**.  
+전역 변수를 사용하거나 `console.log`를 사용하는 등이 존재하기 때문이다.  
+**async가 있을 경우엔 부작용 함수**로 봐야한다는 것이다.  
+  
+정리 하면, 부작용이 있는 함수인지 판별하는 방법은 
 
-단위 테스트에 적합한 함수     
+- 인자값과 반환값 둘 중 하나라도 존재하지 않거나
+- async 가 있거나
 
+등의 경우엔 부작용 함수의 신호로 봐야 한다.
 
-## 실제 예제
+> 물론 가장 중요한 것은 코드를 보고 외부에 영향을 주는 것들이 있는지, 멱등성을 지키고 있는지를 봐야한다.
+
+## 2. 실제 예제
+
+예를 들어 다음과 같은 코드가 있다고 가정해보자.
 
 ```ts
+export async function notifyTag(fields: Field[]): Promise<void> {
+  const { name: userTagName, count } = await getUserTag();
 
-if (fields.find(({ tagName: tempTagName }) => tempTagName === parsedTagName)){
-    showNotification();
-
-    return;
+  if (fields.find((field) => field.tagName === userTagName)) {
+    showNotification(`${userTagName}의 개수는 ${count} 입니다.`);
+  } else {
+    showNotification(`${userTagName} 에 관련된 태그가 존재하지 않습니다.`);
+  }
 }
 ```
 
+- 외부 API를 통해 User의 Tag 정보를 가져온다.
+- 함수 인자로 전달 받은 Field 항목들을 비교해보면서
+- 일치하는 경우와 그렇지 않을 경우에 따른 메세지를 노출시킨다.
+
+이 함수를 리팩토링할때 `if ~ else` 전체를 함수로 추출해서 Notify에 대한 책임을 맡긴다면 이 리팩토링은 부작용 함수만 늘리게 된다.
+
+```ts
+function notifyUserTag(fields: Field[], userTagName: string, count: number) {
+  if (fields.find((field) => field.tagName === userTagName)) {
+    showNotification(`${userTagName}의 개수는 ${count} 입니다.`);
+  } else {
+    showNotification(`${userTagName} 에 관련된 태그가 존재하지 않습니다.`);
+  }
+}
+
+export async function notifyTag(fields: Field[]): Promise<void> {
+  const { name: userTagName, count } = await getUserTag();
+  notifyUserTag(fields, userTagName, count);
+}
+```
+
+- 리팩토링 결과인 함수 `notifyUserTag` 는 `showNotification` 로 인해 부작용 함수이다.
+- 2개의 함수로 리팩토링 되었지만, 
 외부에 영향을 주는 부작용까지는 함수 추출의 대상이 아니다.
 부작용을 제외한 나머지 부분만 함수 추출의 대상이 된다.
 EventHandler, ViewComponent 등 부작용을 다루기 위한 계층에서 부작용 함수와 순수 함수를 연결시킨다.
