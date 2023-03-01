@@ -11,4 +11,3 @@ export async function notifyTag(fields: Field[]): Promise<void> {
     showNotification(`${userTagName} 에 관련된 태그가 존재하지 않습니다.`);
   }
 }
-
