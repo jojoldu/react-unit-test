@@ -3,13 +3,17 @@ import { Modal } from './Modal';
 import { requestPg } from './requestPg';
 
 export async function payCourses(courses: Course[]) {
+  await payAll(courses);
+
+  Modal.open(`${courses.length} 개 강의가 결제되었습니다.`);
+}
+
+async function payAll(courses: Course[]) {
   const courseAmounts = getCourseAmounts(courses);
 
   for (const courseAmount of courseAmounts) {
     await requestPg(courseAmount.title, courseAmount.billingAmount);
   }
-
-  Modal.open(`${courses.length} 개 강의가 결제되었습니다.`);
 }
 export function getCourseAmounts(courses: Course[]) {
   return courses
