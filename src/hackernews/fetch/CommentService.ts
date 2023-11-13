@@ -1,13 +1,13 @@
-import { inject, injectable } from "tsyringe";
-import type HttpClient from "../../api/http-client/HttpClient";
-import { Comment } from "../Comment";
+import { inject, injectable } from 'tsyringe';
+import type HttpClient from '../../api/http-client/HttpClient';
+import { Comment } from '../Comment';
 
 @injectable()
 export default class CommentService {
-  constructor(@inject("HttpClient") private httpClient: HttpClient) {}
+  constructor(@inject('HttpClient') private httpClient: HttpClient) {}
 
   async fetchComments() {
-    const {data} = await this.httpClient.get("/comments", options);
+    const { data } = await this.httpClient.get('/comments', {});
     return data;
   }
 
@@ -15,8 +15,8 @@ export default class CommentService {
     const comment = {
       id: req.id,
       name: `이름${req.id}`,
-    }
-    const {data} = await this.httpClient.post("/comment", comment, options);
+    };
+    const { data } = await this.httpClient.post('/comment', comment, {});
     return data;
   }
 }

@@ -81,10 +81,12 @@
   },
   "jest": {
     "transform": {
-      "^.+\\.(t|j)sx?$": [
+      "^.+\\.(t|j)s$": [
         "@swc/jest",
         {
-          "isolatedModules": false
+          "swc": {
+            "sourceMaps": "inline"
+          }
         }
       ]
     },
