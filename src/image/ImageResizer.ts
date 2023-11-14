@@ -14,6 +14,9 @@ class ImageResizer {
   }
 
   resize(): ImageSize {
-    return { width: this.width, height: this.height };
+    return {
+      width: this.width,
+      height: this.height,
+    };
   }
 }
