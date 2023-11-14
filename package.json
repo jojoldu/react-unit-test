@@ -81,12 +81,10 @@
   },
   "jest": {
     "transform": {
-      "^.+\\.(t|j)s$": [
+      "^.+\\.(t|j)sx?$": [
         "@swc/jest",
         {
-          "swc": {
             "sourceMaps": "inline"
-          }
         }
       ]
     },
